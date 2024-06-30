@@ -30,6 +30,7 @@ Crie um arquivo .env na raiz do projeto e adicione suas variáveis de ambiente:
 # Uso
 Para iniciar o bot, use o seguinte comando:
 -node seu-arquivo.js
+
 Certifique-se de substituir seu-arquivo.js pelo nome do arquivo JavaScript que contém o código do bot.
 
 # Contribuição
