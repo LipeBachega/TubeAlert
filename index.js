@@ -60,4 +60,4 @@ async function checkNewVideo() {
     } catch (error) {
         console.log(`Error: ${error}`);
     }
-}
+} 
