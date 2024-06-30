@@ -1,63 +1,64 @@
 import { config } from "dotenv";
 import { Client, GatewayIntentBits } from "discord.js";
-import { google } from "googleapis"
+import { google } from "googleapis";
 import { schedule } from "node-cron";
 
-config()
+config();
 
-let latestVideo = ""
+let latestVideo = "";
+
+const discordToken = process.env.DISCORD_TOKEN;
+const youtubeAPIKey = process.env.YOUTUBE_API_KEY;
+const youtubeChannelID = process.env.YOUTUBE_CHANNEL_ID;
+const discordChannelID = process.env.DISCORD_CHANNEL_ID;
+
+if (!discordToken || !youtubeChannelID || !discordChannelID || !youtubeAPIKey) {
+  console.error(
+    "As variáveis de ambiente não estão configuradas corretamente."
+  );
+  process.exit(1);
+}
 
 const discordClient = new Client({
-    intents: [
-        GatewayIntentBits.GuildMessages,
-        GatewayIntentBits.Guilds
-    ]
-})
+  intents: [GatewayIntentBits.GuildMessages, GatewayIntentBits.Guilds],
+});
 
 const youtubeCLient = google.youtube({
-    version: "v3",
-    auth: process.env.YOUTUBE_API_KEY
-})
+  version: "v3",
+  auth: youtubeAPIKey,
+});
 
-discordClient.login(process.env.DISCORD_TOKEN)
+discordClient.login(discordToken);
 
 discordClient.on("ready", () => {
-    console.log(`Bot online, logado como: ${discordClient.user.tag}`);
-    checkNewVideo()
-    schedule("0 */1 * * *", checkNewVideo)
-
-})
+  console.log(`Bot online, logado como: ${discordClient.user.tag}`);
+  checkNewVideo();
+  schedule("0 */1 * * *", checkNewVideo);
+});
 
 async function checkNewVideo() {
+  try {
+    const response = await youtubeCLient.search
+      .list({
+        channelId: youtubeChannelID,
+        order: "date",
+        part: "snippet",
+        type: "video",
+        maxResults: "1",
+      })
+      .then((res) => res);
 
+    const latestVideoReq = response.data.items[0];
 
-    try {
+    if (latestVideoReq?.id?.videoId != latestVideo) {
+      latestVideo = latestVideoReq.id.videoId;
 
-        const response = await youtubeCLient.search.list({
-            channelId: "UCLRYN-g8AMUxKKBnRn6umhw",
-            order: "date",
-            part: "snippet",
-            type: "video",
-            maxResults: "1"
-        }).then(res => res)
-
-        console.log("Opa");
-        const latestVideoReq = response.data.items[0]
-
-
-        if (latestVideoReq?.id?.videoId != latestVideo) {
-
-            latestVideo = latestVideoReq.id.videoId
-
-            const videoURL = `https://www.youtube.com/watch?v=${latestVideo}`
-            const message = `Novo video no canal, venha conferir!`
-            const channel = discordClient.channels.cache.get("1216849917977428049")
-            channel.send(`${message}\n${videoURL}`)
-
-
-        }
-
-    } catch (error) {
-        console.log(`Error: ${error}`);
+      const videoURL = `https://www.youtube.com/watch?v=${latestVideo}`;
+      const message = `Venha conferir meu novo video galeras.`;
+      const channel = discordClient.channels.cache.get(discordChannelID);
+      channel.send(`${message}\n${videoURL}`);
     }
-} 
+  } catch (error) {
+    console.error(`Error: ${error}`);
+  }
+}
