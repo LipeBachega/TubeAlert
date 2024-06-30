@@ -13,7 +13,7 @@ Este projeto é um bot de Discord que verifica periodicamente um canal do YouTub
 - Conta no Discord com um bot configurado
 - Chave de API do YouTube Data v3
 
-#Instalação
+# Instalação
 Clone o repositório para sua máquina local:
 - git clone https://github.com/seu-usuario/nome-do-repositorio.git
 
@@ -33,11 +33,11 @@ Para iniciar o bot, use o seguinte comando:
 Certifique-se de substituir seu-arquivo.js pelo nome do arquivo JavaScript que contém o código do bot.
 
 # Contribuição
-1- Faça um fork do projeto.
-2- Crie uma branch para sua feature (git checkout -b feature/nova-feature).
-3- Commit suas mudanças (git commit -am 'Adiciona nova feature').
-4- Faça o push para a branch (git push origin feature/nova-feature).
-5- Crie um novo Pull Request.
+- Faça um fork do projeto.
+- Crie uma branch para sua feature (git checkout -b feature/nova-feature).
+- Commit suas mudanças (git commit -am 'Adiciona nova feature').
+- Faça o push para a branch (git push origin feature/nova-feature).
+- Crie um novo Pull Request.
 
 # Licença
 Este projeto está licenciado sob a Licença MIT.
