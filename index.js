@@ -54,7 +54,7 @@ async function checkNewVideo() {
       latestVideo = latestVideoReq.id.videoId;
 
       const videoURL = `https://www.youtube.com/watch?v=${latestVideo}`;
-      const message = `Venha conferir meu novo video galeras.`;
+      const message = `Insert your message here!!!!`;
       const channel = discordClient.channels.cache.get(discordChannelID);
       channel.send(`${message}\n${videoURL}`);
     }
